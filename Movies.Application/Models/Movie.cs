@@ -2,7 +2,7 @@
 
 namespace Movies.Application.Models;
 
-public class Movie
+public partial class Movie
 {
     public required Guid Id { get; init; } //init only can not change 
     
