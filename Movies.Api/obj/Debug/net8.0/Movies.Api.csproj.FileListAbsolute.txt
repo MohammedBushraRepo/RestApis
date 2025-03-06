@@ -38,3 +38,4 @@ C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarte
 C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Api\obj\Debug\net8.0\Movies.Api.pdb
 C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Api\obj\Debug\net8.0\Movies.Api.genruntimeconfig.cache
 C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Api\obj\Debug\net8.0\ref\Movies.Api.dll
+C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Api\obj\Debug\net8.0\Movies.Api.sourcelink.json

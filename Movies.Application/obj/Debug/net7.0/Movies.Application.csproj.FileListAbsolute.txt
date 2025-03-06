@@ -10,3 +10,4 @@ C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarte
 C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Application\obj\Debug\net7.0\refint\Movies.Application.dll
 C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Application\obj\Debug\net7.0\Movies.Application.pdb
 C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Application\obj\Debug\net7.0\ref\Movies.Application.dll
+C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Application\obj\Debug\net7.0\Movies.Application.sourcelink.json

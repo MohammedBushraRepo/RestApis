@@ -9,3 +9,4 @@ C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarte
 C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Contracts\obj\Debug\net8.0\refint\Movies.Contracts.dll
 C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Contracts\obj\Debug\net8.0\Movies.Contracts.pdb
 C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Contracts\obj\Debug\net8.0\ref\Movies.Contracts.dll
+C:\Users\MBushra\Downloads\REST\app\rest-api-course-final-master\1.GettingStarted\Movies.Contracts\obj\Debug\net8.0\Movies.Contracts.sourcelink.json
