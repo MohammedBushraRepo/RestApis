@@ -482,25 +482,17 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
-Movies.Api/bin/Debug/net8.0/Movies.Api.exe
-Movies.Api/bin/Debug/net8.0/Movies.Api.exe
-Movies.Api/bin/Debug/net8.0/Movies.Api.dll
-Movies.Api/bin/Debug/net8.0/Movies.Api.exe
-Movies.Api/bin/Debug/net8.0/Movies.Api.pdb
-Movies.Api/bin/Debug/net8.0/Movies.Application.dll
-Movies.Api/bin/Debug/net8.0/Movies.Application.pdb
-Movies.Api/bin/Debug/net8.0/Movies.Contracts.dll
-Movies.Api/obj/Debug/net8.0/apphost.exe
-Movies.Api/obj/Debug/net8.0/Movies.Api.AssemblyInfoInputs.cache
-Movies.Api/obj/Debug/net8.0/Movies.Api.csproj.AssemblyReference.cache
-Movies.Api/obj/Debug/net8.0/Movies.Api.csproj.FileListAbsolute.txt
-Movies.Api/obj/Debug/net8.0/Movies.Api.pdb
-Movies.Api/obj/Debug/net8.0/Movies.Api.dll
-Movies.Api/obj/Debug/net8.0/ref/Movies.Api.dll
-Movies.Api/obj/Debug/net8.0/refint/Movies.Api.dll
-Movies.Application/bin/Debug/net7.0/Movies.Application.dll
-Movies.Application/bin/Debug/net7.0/Movies.Application.pdb
-Movies.Api/bin/Debug/net8.0/Movies.Contracts.pdb
+# Ignore build output and temporary files
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.suo
+*.user
+*.sln.ide
+
 # Build and output files
 bin/
 obj/
