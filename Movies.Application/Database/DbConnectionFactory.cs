@@ -7,12 +7,13 @@ namespace Movies.Application.Database;
 
 public interface IDbConnectionFactory
 {
-   Task <IDbConnection> CreateConnectionAsync();
+    Task<IDbConnection> CreateConnectionAsync();
 }
 
 
 public class NpgsqlConnectionFactory : IDbConnectionFactory
 {
+    // this class is responsible of all db connections
     private readonly string _connectionString;
 
     public NpgsqlConnectionFactory(string connectionString)

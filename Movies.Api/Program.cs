@@ -23,7 +23,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-var dbIntializer = app.Services.GetRequiredService<DbIntializer>();
+var dbIntializer = app.Services.GetRequiredService<DbIntializer>(); // to run the initializor 
 await dbIntializer.InitializeAsync();
 
 app.Run();
