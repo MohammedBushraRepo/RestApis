@@ -1,9 +1,39 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Movies.Api.Mapping;
 using Movies.Application;
 using Movies.Application.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
+
+
+//configure the Authentication ********************************************************************
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = config["Jwt:Issuer"], // Add this
+        ValidAudience = config["Jwt:Audience"], // Add this
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
+        ValidateIssuerSigningKey = true,//if you didnet make it will not validate any thing
+        ValidateLifetime = true,//because we dotn want to have key expired and still work 
+        ValidateIssuer = true, // This was true but no ValidIssuer was set
+        ValidateAudience = true // This was true but no ValidAudience was set
+    };
+});
+
+builder.Services.AddAuthorization();
+
+
+//////
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -20,7 +50,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication(); ///should always be before authorization 
 app.UseAuthorization();
 
 //to register the Middleware 
