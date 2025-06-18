@@ -1,3 +1,4 @@
+using Movies.Api.Mapping;
 using Movies.Application;
 using Movies.Application.Repositories;
 
@@ -22,7 +23,10 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+//to register the Middleware 
+app.UseMiddleware<ValidationMappingMiddleware>();
 app.MapControllers();
+
 var dbIntializer = app.Services.GetRequiredService<DbIntializer>(); // to run the initializor 
 await dbIntializer.InitializeAsync();
 
