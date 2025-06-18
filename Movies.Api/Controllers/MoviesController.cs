@@ -18,7 +18,7 @@ public class MoviesController : ControllerBase
         _movieService = movieService;
     }
 
-    [Authorize(AuthConstants.AdminUserPolicyName)] //only authenticated users with admin policy will be authenticated 
+    [Authorize(AuthConstants.TrustedMemberPolicyName)] //only authenticated users with admin policy will be authenticated 
     [HttpPost(ApiEndpoints.Movies.Create)]
     public async Task<IActionResult> Create([FromBody] CreateMovieRequest request, CancellationToken token)
     {
@@ -54,7 +54,7 @@ public class MoviesController : ControllerBase
         var moviesResponse = movies.MapToResponse();
         return Ok(moviesResponse);
     }
-    [Authorize(AuthConstants.AdminUserPolicyName)]
+    [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPut(ApiEndpoints.Movies.Update)]
     public async Task<IActionResult> Update([FromRoute] Guid id,
             [FromBody] UpdateMovieRequest request, CancellationToken token)
@@ -69,7 +69,7 @@ public class MoviesController : ControllerBase
         var response = updatedMovie.MapToResponse();
         return Ok(response);
     }
-    [Authorize("Admin")]
+    [Authorize(AuthConstants.AdminUserPolicyName)]
     [HttpDelete(ApiEndpoints.Movies.Delete)]
     public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken token)
     {

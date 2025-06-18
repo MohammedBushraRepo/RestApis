@@ -33,7 +33,16 @@ builder.Services.AddAuthentication(x =>
 //implement Authorization 
 builder.Services.AddAuthorization(x =>
 {
+    //only admin claim 
     x.AddPolicy(AuthConstants.AdminUserPolicyName, p => p.RequireClaim(AuthConstants.AdminUserClaimName, "true"));
+
+    //either admin or trusted member
+    x.AddPolicy(AuthConstants.TrustedMemberPolicyName,
+      p => p.RequireAssertion(c =>
+      c.User.HasClaim(m => m is { Type: AuthConstants.AdminUserClaimName, Value: "true" }) ||
+      c.User.HasClaim(m => m is { Type: AuthConstants.TrustedMemberClaimName, Value: "true" }))
+
+    );
 });
 
 
