@@ -29,7 +29,6 @@ public class RatingService : IRatingService
                 }
             });
         }
-        //check if that th e movie that we are going to rate actulally exists
 
         var movieExists = await _movieRepository.ExistsByIdAsync(movieId, token);
         if (!movieExists)

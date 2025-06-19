@@ -2,13 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Movies.Api.Auth;
 using Movies.Api.Mapping;
-using Movies.Application.Repositories;
 using Movies.Application.Services;
 using Movies.Contracts.Requests;
 
 namespace Movies.Api.Controllers;
 
-//[Authorize]  // to make any  thing in the controller under the Authorization 
 [ApiController]
 public class MoviesController : ControllerBase
 {
@@ -19,9 +17,10 @@ public class MoviesController : ControllerBase
         _movieService = movieService;
     }
 
-    [Authorize(AuthConstants.TrustedMemberPolicyName)] //only authenticated users with admin policy will be authenticated 
+    [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPost(ApiEndpoints.Movies.Create)]
-    public async Task<IActionResult> Create([FromBody] CreateMovieRequest request, CancellationToken token)
+    public async Task<IActionResult> Create([FromBody] CreateMovieRequest request,
+        CancellationToken token)
     {
         var movie = request.MapToMovie();
         await _movieService.CreateAsync(movie, token);
@@ -29,15 +28,15 @@ public class MoviesController : ControllerBase
         return CreatedAtAction(nameof(Get), new { idOrSlug = movie.Id }, movieResponse);
     }
 
-    //[AllowAnonymous]
-    // [Authorize]
     [HttpGet(ApiEndpoints.Movies.Get)]
-    public async Task<IActionResult> Get([FromRoute] string idOrSlug, CancellationToken token)
+    public async Task<IActionResult> Get([FromRoute] string idOrSlug,
+        CancellationToken token)
     {
-        var userId = HttpContext.GetUserId(); //using the extension method
-        var movie = Guid.TryParse(idOrSlug, out var id)   //parse the slug and if get id out of it 
-         ? await _movieService.GetByIdAsync(id, userId, token)
-         : await _movieService.GetBySlugAsync(idOrSlug, userId, token);
+        var userId = HttpContext.GetUserId();
+
+        var movie = Guid.TryParse(idOrSlug, out var id)
+            ? await _movieService.GetByIdAsync(id, userId, token)
+            : await _movieService.GetBySlugAsync(idOrSlug, userId, token);
         if (movie is null)
         {
             return NotFound();
@@ -46,8 +45,7 @@ public class MoviesController : ControllerBase
         var response = movie.MapToResponse();
         return Ok(response);
     }
-    //[AllowAnonymous]
-    // [Authorize]
+
     [HttpGet(ApiEndpoints.Movies.GetAll)]
     public async Task<IActionResult> GetAll(CancellationToken token)
     {
@@ -57,10 +55,12 @@ public class MoviesController : ControllerBase
         var moviesResponse = movies.MapToResponse();
         return Ok(moviesResponse);
     }
+
     [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPut(ApiEndpoints.Movies.Update)]
     public async Task<IActionResult> Update([FromRoute] Guid id,
-            [FromBody] UpdateMovieRequest request, CancellationToken token)
+        [FromBody] UpdateMovieRequest request,
+        CancellationToken token)
     {
         var movie = request.MapToMovie(id);
         var userId = HttpContext.GetUserId();
@@ -73,9 +73,11 @@ public class MoviesController : ControllerBase
         var response = updatedMovie.MapToResponse();
         return Ok(response);
     }
+
     [Authorize(AuthConstants.AdminUserPolicyName)]
     [HttpDelete(ApiEndpoints.Movies.Delete)]
-    public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken token)
+    public async Task<IActionResult> Delete([FromRoute] Guid id,
+        CancellationToken token)
     {
         var deleted = await _movieService.DeleteByIdAsync(id, token);
         if (!deleted)

@@ -15,7 +15,7 @@ public class RatingRepository : IRatingRepository
 
     public async Task<bool> RateMovieAsync(Guid movieId, int rating, Guid userId, CancellationToken token = default)
     {
-        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token); // we doing upsert => insert and update in the same time 
+        using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var result = await connection.ExecuteAsync(new CommandDefinition("""
             insert into ratings(userid, movieid, rating) 
             values (@userId, @movieId, @rating)
