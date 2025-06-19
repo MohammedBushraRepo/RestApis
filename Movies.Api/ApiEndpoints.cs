@@ -16,7 +16,7 @@ public static class ApiEndpoints
 
         //rating A movie End Points 
         public const string Rate = $"{Base}/{{id:guid}}/ratings";
-        public const string DeleteRatings = $"{Base}/{{id:guid}}/ratings";
+        public const string DeleteRating = $"{Base}/{{id:guid}}/ratings";
     }
 
     public static class Ratings
