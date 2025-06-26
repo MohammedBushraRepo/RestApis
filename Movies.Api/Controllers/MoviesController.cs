@@ -27,10 +27,10 @@ public class MoviesController : ControllerBase
         var movieResponse = movie.MapToResponse();
         return CreatedAtAction(nameof(Get), new { idOrSlug = movie.Id }, movieResponse);
     }
-
+    [Authorize]
     [HttpGet(ApiEndpoints.Movies.Get)]
     public async Task<IActionResult> Get([FromRoute] string idOrSlug,
-        CancellationToken token)
+            CancellationToken token)
     {
         var userId = HttpContext.GetUserId();
 
@@ -45,7 +45,7 @@ public class MoviesController : ControllerBase
         var response = movie.MapToResponse();
         return Ok(response);
     }
-
+    [Authorize]
     [HttpGet(ApiEndpoints.Movies.GetAll)]
     public async Task<IActionResult> GetAll(CancellationToken token)
     {

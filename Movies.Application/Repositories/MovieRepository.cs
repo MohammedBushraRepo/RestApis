@@ -106,17 +106,17 @@ public class MovieRepository : IMovieRepository
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var result = await connection.QueryAsync(new CommandDefinition("""
-            select m.*, 
-                   string_agg(distinct g.name, ',') as genres , 
-                   round(avg(r.rating), 1) as rating, 
-                   myr.rating as userrating
-            from movies m 
-            left join genres g on m.id = g.movieid
-            left join ratings r on m.id = r.movieid
-            left join ratings myr on m.id = myr.movieid
-                and myr.userid = @userId
-            group by id, userrating
-            """, new { userId }, cancellationToken: token));
+        select m.*, 
+               string_agg(distinct g.name, ',') as genres, 
+               round(avg(r.rating), 1) as rating, 
+               myr.rating as userrating
+        from movies m 
+        left join genres g on m.id = g.movieid
+        left join ratings r on m.id = r.movieid
+        left join ratings myr on m.id = myr.movieid
+            and myr.userid = @userId
+        group by m.id, m.title, m.yearofrelease, myr.rating
+        """, new { userId }, cancellationToken: token));
 
         return result.Select(x => new Movie
         {
@@ -125,9 +125,40 @@ public class MovieRepository : IMovieRepository
             YearOfRelease = x.yearofrelease,
             Rating = (float?)x.rating,
             UserRating = (int?)x.userrating,
-            Genres = Enumerable.ToList(x.genres.Split(','))
+            Genres = string.IsNullOrEmpty(x.genres)
+                ? new List<string>()
+                : new List<string>(x.genres.Split(','))
         });
     }
+    // public async Task<IEnumerable<Movie>> GetAllAsync(Guid? userId = default, CancellationToken token = default)
+    // {
+    //     using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
+    //     var result = await connection.QueryAsync(new CommandDefinition("""
+    //              select m.*, 
+    //               string_agg(distinct g.name, ',') as genres, 
+    //               round(avg(r.rating), 1) as rating, 
+    //               (
+    //                   select myr.rating 
+    //                   from ratings myr 
+    //                   where myr.movieid = m.id and myr.userid = @userId
+    //                   limit 1
+    //               ) as userrating
+    //             from movies m
+    //             left join genres g on m.id = g.movieid
+    //             left join ratings r on m.id = r.movieid
+    //             group by m.id, m.title, m.yearofrelease
+    //         """, new { userId }, cancellationToken: token));
+
+    //     return result.Select(x => new Movie
+    //     {
+    //         Id = x.id,
+    //         Title = x.title,
+    //         YearOfRelease = x.yearofrelease,
+    //         Rating = (float?)x.rating,
+    //         UserRating = (int?)x.userrating,
+    //         Genres = Enumerable.ToList(x.genres.Split(','))
+    //     });
+    // }
 
     public async Task<bool> UpdateAsync(Movie movie, CancellationToken token = default)
     {
