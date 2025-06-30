@@ -1,4 +1,5 @@
 using System.Text;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Movies.Api.Auth;
@@ -47,7 +48,15 @@ builder.Services.AddAuthorization(x =>
 
 
 //////
-
+builder.Services.AddApiVersioning(x =>
+{
+    //this object to specify the default version if not provided 
+    x.DefaultApiVersion = new ApiVersion(1.0);
+    x.AssumeDefaultVersionWhenUnspecified = true;
+    x.ReportApiVersions = true;
+    x.ApiVersionReader = new MediaTypeApiVersionReader("api-version");
+    //new HeaderApiVersionReader("api-version"); // to view allowed versions from deprecated versions
+}).AddMvc();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
