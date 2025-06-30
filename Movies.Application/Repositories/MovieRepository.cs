@@ -101,12 +101,21 @@ public class MovieRepository : IMovieRepository
 
         return movie;
     }
-
     public async Task<IEnumerable<Movie>> GetAllAsync(GetAllMoviesOptions options, CancellationToken token = default)
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
-        var result = await connection.QueryAsync(new CommandDefinition("""
-                   select m.*, 
+
+        var orderClause = string.Empty;
+        if (options.SortField is not null)
+        {
+            orderClause = $"""
+            , m.{options.SortField}
+            order by m.{options.SortField} {(options.SortOrder == SortOrder.Ascending ? "asc" : "desc")}
+            """;
+        }
+
+        var result = await connection.QueryAsync(new CommandDefinition($"""
+            select m.*, 
                    string_agg(distinct g.name, ',') as genres , 
                    round(avg(r.rating), 1) as rating, 
                    myr.rating as userrating
@@ -117,12 +126,13 @@ public class MovieRepository : IMovieRepository
                 and myr.userid = @userId
             where (@title is null or m.title like ('%' || @title || '%'))
             and  (@yearofrelease is null or m.yearofrelease = @yearofrelease)
-            group by id , userrating
-        """, new
+            group by id, userrating {orderClause}
+           
+            """, new
         {
             userId = options.UserId,
             title = options.Title,
-            yearofrelease = options.YearOfRelease
+            yearofrelease = options.YearOfRelease,
 
         }, cancellationToken: token));
 
@@ -133,40 +143,11 @@ public class MovieRepository : IMovieRepository
             YearOfRelease = x.yearofrelease,
             Rating = (float?)x.rating,
             UserRating = (int?)x.userrating,
-            Genres = string.IsNullOrEmpty(x.genres)
-                ? new List<string>()
-                : new List<string>(x.genres.Split(','))
+            Genres = Enumerable.ToList(x.genres.Split(','))
         });
     }
-    // public async Task<IEnumerable<Movie>> GetAllAsync(Guid? userId = default, CancellationToken token = default)
-    // {
-    //     using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
-    //     var result = await connection.QueryAsync(new CommandDefinition("""
-    //              select m.*, 
-    //               string_agg(distinct g.name, ',') as genres, 
-    //               round(avg(r.rating), 1) as rating, 
-    //               (
-    //                   select myr.rating 
-    //                   from ratings myr 
-    //                   where myr.movieid = m.id and myr.userid = @userId
-    //                   limit 1
-    //               ) as userrating
-    //             from movies m
-    //             left join genres g on m.id = g.movieid
-    //             left join ratings r on m.id = r.movieid
-    //             group by m.id, m.title, m.yearofrelease
-    //         """, new { userId }, cancellationToken: token));
 
-    //     return result.Select(x => new Movie
-    //     {
-    //         Id = x.id,
-    //         Title = x.title,
-    //         YearOfRelease = x.yearofrelease,
-    //         Rating = (float?)x.rating,
-    //         UserRating = (int?)x.userrating,
-    //         Genres = Enumerable.ToList(x.genres.Split(','))
-    //     });
-    // }
+
 
     public async Task<bool> UpdateAsync(Movie movie, CancellationToken token = default)
     {
