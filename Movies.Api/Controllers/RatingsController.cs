@@ -37,13 +37,13 @@ public class RatingsController : ControllerBase
         return result ? Ok() : NotFound();
     }
 
-    // [Authorize]
-    // [HttpGet(ApiEndpoints.Ratings.GetUserRatings)]
-    // public async Task<IActionResult> GetUserRatings(CancellationToken token = default)
-    // {
-    //     var userId = HttpContext.GetUserId();
-    //     var ratings = await _ratingService.GetRatingsForUserAsync(userId!.Value, token);
-    //     var ratingsResponse = ratings.MapToResponse();
-    //     return Ok(ratingsResponse);
-    // }
+    [Authorize]
+    [HttpGet(ApiEndpoints.Ratings.GetUserRatings)]
+    public async Task<IActionResult> GetUserRatings(CancellationToken token = default)
+    {
+        var userId = HttpContext.GetUserId();
+        var ratings = await _ratingService.GetRatingsForUserAsync(userId!.Value, token);
+        var ratingsResponse = ratings.MapToResponse();
+        return Ok(ratingsResponse);
+    }
 }
