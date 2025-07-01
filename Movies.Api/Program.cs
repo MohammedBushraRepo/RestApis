@@ -62,6 +62,9 @@ builder.Services.AddApiVersioning(x =>
     //new HeaderApiVersionReader("api-version"); // to view allowed versions from deprecated versions
 }).AddMvc().AddApiExplorer();
 
+//Register Caching
+//builder.Services.AddResponseCaching();
+
 builder.Services.AddControllers();
 
 //register health checks  
@@ -98,6 +101,10 @@ app.MapHealthChecks("_health");
 app.UseHttpsRedirection();
 app.UseAuthentication(); ///should always be before authorization 
 app.UseAuthorization();
+
+//we should have caching here before middleware and after authentication and Authorization 
+//app.UseCors();
+//app.UseResponseCaching();
 
 //to register the Middleware 
 app.UseMiddleware<ValidationMappingMiddleware>();
