@@ -64,6 +64,16 @@ builder.Services.AddApiVersioning(x =>
 
 //Register Caching
 //builder.Services.AddResponseCaching();
+//*** output caching ====> registeration 
+builder.Services.AddOutputCache(x =>
+{
+    x.AddBasePolicy(c => c.Cache());
+    x.AddPolicy("MovieCache", c =>
+        c.Cache()
+        .Expire(TimeSpan.FromMinutes(1))
+        .SetVaryByQuery(new[] { "title", "year", "sortBy", "page", "pageSize" })
+        .Tag("movies"));
+});
 
 builder.Services.AddControllers();
 
@@ -102,9 +112,10 @@ app.UseHttpsRedirection();
 app.UseAuthentication(); ///should always be before authorization 
 app.UseAuthorization();
 
-//we should have caching here before middleware and after authentication and Authorization 
+//we should have caching here before middleware and after authentication and Authorization  very important 
 //app.UseCors();
 //app.UseResponseCaching();
+app.UseOutputCache();
 
 //to register the Middleware 
 app.UseMiddleware<ValidationMappingMiddleware>();
