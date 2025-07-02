@@ -21,13 +21,14 @@ public class MoviesController : ControllerBase
         _movieService = movieService;
         _outputCacheStore = outputCacheStore;
     }
-    [ApiVersion(1.0)]
-    [Authorize(AuthConstants.TrustedMemberPolicyName)]
+    [ServiceFilter(typeof(ApiKeyAuthFilter))]//hint those services filter using api-key based authentication 
+                                             // [ApiVersion(1.0)]
+                                             //[Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPost(ApiEndpoints.Movies.Create)]
     [ProducesResponseType(typeof(MovieResponse), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    // [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateMovieRequest request,
-           CancellationToken token)
+       CancellationToken token)
     {
         var movie = request.MapToMovie();
         await _movieService.CreateAsync(movie, token);
@@ -56,15 +57,16 @@ public class MoviesController : ControllerBase
     //     return Ok(response);
     // }
 
-    [ApiVersion(1.0)]
+    // [ApiVersion(1.0)]
+    [ServiceFilter(typeof(ApiKeyAuthFilter))]
     //[Authorize] 
     [HttpGet(ApiEndpoints.Movies.Get)]
-    [OutputCache(PolicyName = "MovieCache")] // also disable authentiation in post man ==> No Auth in order for this to work 
+    // [OutputCache(PolicyName = "MovieCache")] // also disable authentiation in post man ==> No Auth in order for this to work 
     //[ResponseCache(Duration = 30, VaryByHeader = "Accept , Accept-Encoding ", Location = ResponseCacheLocation.Any)]
     [ProducesResponseType(typeof(MovieResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromRoute] string idOrSlug,
-               CancellationToken token)
+                   CancellationToken token)
     {
         var userId = HttpContext.GetUserId();
 

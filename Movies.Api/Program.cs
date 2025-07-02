@@ -50,6 +50,8 @@ builder.Services.AddAuthorization(x =>
     );
 });
 
+// register the api key 
+builder.Services.AddScoped<ApiKeyAuthFilter>();
 
 //////
 builder.Services.AddApiVersioning(x =>
