@@ -21,6 +21,10 @@ public class MoviesController : ControllerBase
         _movieService = movieService;
         _outputCacheStore = outputCacheStore;
     }
+
+
+
+
     [ServiceFilter(typeof(ApiKeyAuthFilter))]//hint those services filter using api-key based authentication 
     [ApiVersion(1.0)]
     //[Authorize(AuthConstants.TrustedMemberPolicyName)]

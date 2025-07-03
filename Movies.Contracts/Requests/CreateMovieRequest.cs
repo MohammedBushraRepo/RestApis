@@ -1,6 +1,6 @@
 ﻿namespace Movies.Contracts.Requests;
 
-public class CreateMovieRequest : PagedRequest
+public class CreateMovieRequest
 {
     public required string Title { get; init; }
 
