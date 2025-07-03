@@ -68,12 +68,16 @@ public class IdentityController : ControllerBase
         {
             // Set the claims identity with all the claims we've prepared
             Subject = new ClaimsIdentity(claims),
+
             // Set token expiration time (current time + 8 hours)
             Expires = DateTime.UtcNow.Add(TokenLifetime),
+
             // Set the issuer of the token
             Issuer = "https://id.nickchapsas.com",
+
             // Set the intended audience of the token
             Audience = "https://movies.nickchapsas.com",
+
             // Set the signing credentials using the secret key and HMAC SHA256 algorithm
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
@@ -85,6 +89,7 @@ public class IdentityController : ControllerBase
 
         // Write the token to a string
         var jwt = tokenHandler.WriteToken(token);
+
         // Return the token string in an HTTP 200 OK response
         return Ok(jwt);
     }

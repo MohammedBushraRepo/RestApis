@@ -16,9 +16,12 @@ public class AdminAuthRequirement : IAuthorizationHandler, IAuthorizationRequire
 
     public Task HandleAsync(AuthorizationHandlerContext context)
     {
+        // to handle the logic for jwt claim or the Api key 
+
+
         if (context.User.HasClaim(AuthConstants.AdminUserClaimName, "true"))
         {
-            context.Succeed(this);
+            context.Succeed(this); //successful Authentication 
             return Task.CompletedTask;
         }
 

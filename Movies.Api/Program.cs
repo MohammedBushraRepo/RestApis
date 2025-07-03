@@ -58,7 +58,7 @@ builder.Services.AddScoped<ApiKeyAuthFilter>();
 builder.Services.AddApiVersioning(x =>
 {
     //this object to specify the default version if not provided 
-    x.DefaultApiVersion = new ApiVersion(1.0);
+    x.DefaultApiVersion = new ApiVersion(1.0); //beacuse it is default if you didnet make the api version on the controles end point will not work 
     x.AssumeDefaultVersionWhenUnspecified = true;
     x.ReportApiVersions = true;
     x.ApiVersionReader = new MediaTypeApiVersionReader("api-version");
@@ -117,8 +117,8 @@ app.UseAuthorization();
 
 //we should have caching here before middleware and after authentication and Authorization  very important 
 //app.UseCors();
-//app.UseResponseCaching();
-app.UseOutputCache();
+//app.UseResponseCaching();  -- to apply response caching 
+app.UseOutputCache(); // to apply out put caching 
 
 //to register the Middleware 
 app.UseMiddleware<ValidationMappingMiddleware>();
