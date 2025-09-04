@@ -4,6 +4,12 @@ public static class ApiEndpoints
 {
     private const string ApiBase = "api";
 
+    public static class Identity
+    {
+        public const string Base = $"{ApiBase}/identity";
+        // public const string GetUserRatings = $"{Base}/me";
+    }
+
     public static class Movies
     {
         private const string Base = $"{ApiBase}/movies";
